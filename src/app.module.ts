@@ -6,8 +6,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import configuration from './config';
 
-import { CluesModule } from './clues/clues.module';
-import { ClueEntity } from './clues/entities/clue.entity';
+import { CluesModule } from './modules/clues/clues.module';
+import { ClueEntity } from './modules/clues/entities/clue.entity';
 
 @Module({
   imports: [
