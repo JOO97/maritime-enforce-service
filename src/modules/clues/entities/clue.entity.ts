@@ -1,10 +1,16 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Level } from '../enums/level.enum';
 import { Status } from '../enums/status.enum';
 
 @Entity()
-export class ClueEntity {
-  @PrimaryGeneratedColumn()
+export class Clue {
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @Column({
@@ -41,5 +47,15 @@ export class ClueEntity {
   @Column({
     type: 'timestamp',
   })
-  occTime: number;
+  occTime: Date;
+
+  @CreateDateColumn({
+    type: 'timestamp',
+  })
+  createdTime: Date;
+
+  @UpdateDateColumn({
+    type: 'timestamp',
+  })
+  updatedTime: Date;
 }

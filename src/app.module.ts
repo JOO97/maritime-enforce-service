@@ -7,7 +7,7 @@ import { AppService } from './app.service';
 import configuration from './config';
 
 import { CluesModule } from './modules/clues/clues.module';
-import { ClueEntity } from './modules/clues/entities/clue.entity';
+import { Clue } from './modules/clues/entities/clue.entity';
 
 @Module({
   imports: [
@@ -24,7 +24,8 @@ import { ClueEntity } from './modules/clues/entities/clue.entity';
       username: 'root',
       password: 'root',
       database: 'mes',
-      entities: [ClueEntity],
+      // entities: [Clue],
+      autoLoadEntities: true, //Auto-load entities
       synchronize: true,
     }),
     CluesModule,
