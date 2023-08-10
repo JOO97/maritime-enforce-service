@@ -3,6 +3,7 @@ import { IsString, IsNotEmpty, IsNumber, IsInt, Min } from 'class-validator';
 
 import { Status } from '../enums/status.enum';
 import { Level } from '../enums/level.enum';
+import { Type } from '../enums/type.enum';
 
 export class CLueDto {
   @ApiProperty()
@@ -21,6 +22,14 @@ export class CLueDto {
   @ApiProperty()
   @IsNumber()
   latitude: number;
+
+  @ApiProperty({
+    enum: Type,
+    description: '类型',
+    example: Type.leadingEnd,
+  })
+  @IsNumber()
+  type: number;
 
   @ApiProperty({
     enum: Level,

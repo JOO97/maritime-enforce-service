@@ -18,6 +18,8 @@ async function bootstrap() {
     SwaggerModule.setup(process.env.DOCUMENTATION_PATH, app, document);
   }
 
+  // process.env.SOCKET_ENABLE && app.useWebSocketAdapter();
+
   await app.listen(process.env.PORT);
 }
 bootstrap();

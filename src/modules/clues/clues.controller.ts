@@ -38,14 +38,32 @@ export class CluesController {
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'modify clue by id' })
+  @ApiOperation({ summary: 'modify a clue by id' })
   async update(@Param('id') id: string, @Body() dto: UpdateCLueDto) {
     return await this.cluesService.update(id, dto);
   }
 
-  // @Patch(':id')
-  // @ApiOperation({ summary: 'modify clue by id' })
-  // async delete(@Param('id') id: string, @Body() dto: UpdateCLueDto) {
-  //   return await this.cluesService.update(id, dto);
-  // }
+  @Delete(':id')
+  @ApiOperation({ summary: 'delete a clue by id' })
+  async delete(@Param('id') id: string) {
+    return await this.cluesService.delete(id);
+  }
+
+  @Get('/countByType')
+  @ApiOperation({ summary: 'count clues by type field' })
+  async countItemsByType() {
+    return await this.cluesService.countItems('type');
+  }
+
+  @Post(':id/upgrade')
+  @ApiOperation({ summary: 'upgrade a clue by id' })
+  async upgrade(@Param('id') id: string) {
+    return await this.cluesService.upgrade(id);
+  }
+
+  @Post(':id/ignore')
+  @ApiOperation({ summary: 'upgrade a clue by id' })
+  async ignore(@Param('id') id: string) {
+    return await this.cluesService.ignore(id);
+  }
 }

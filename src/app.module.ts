@@ -6,8 +6,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import configuration from './config';
 
+import { WebSocketModule } from './socket/websocket.module';
 import { CluesModule } from './modules/clues/clues.module';
-import { Clue } from './modules/clues/entities/clue.entity';
+// import { Clue } from './modules/clues/entities/clue.entity';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { Clue } from './modules/clues/entities/clue.entity';
       synchronize: true,
     }),
     CluesModule,
+    WebSocketModule,
   ],
   controllers: [AppController],
   providers: [AppService],

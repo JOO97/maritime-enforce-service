@@ -7,11 +7,12 @@ import {
 } from 'typeorm';
 import { Level } from '../enums/level.enum';
 import { Status } from '../enums/status.enum';
+import { Type } from '../enums/type.enum';
 
 @Entity()
 export class Clue {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: number | string;
 
   @Column({
     type: 'varchar',
@@ -30,6 +31,13 @@ export class Clue {
 
   @Column()
   latitude: number;
+
+  @Column({
+    type: 'enum',
+    enum: Type,
+    default: Type.leadingEnd,
+  })
+  type: Type;
 
   @Column({
     type: 'enum',
