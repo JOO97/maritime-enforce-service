@@ -12,13 +12,22 @@ import {
   Param,
   Post,
   Body,
+  Header,
+  Res,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger';
+
+// import { Response } from 'express';
+import { ApiResponseDTO } from '../../common/dtos/api-response.dto';
+import { PaginatedDTO } from '../../common/dtos/paginated.dto';
 
 import { CluesService } from './clues.service';
-import { CluesPaginationDTO } from './dto/clues-pagination.dto';
-import { CreateCLueDto } from './dto/create-clue.dto';
-import { UpdateCLueDto } from './dto/update-clue.dto';
+import { CluesPaginationDTO } from './dtos/paginated-clues.dto';
+import { CLueDto } from './dtos/clue.dto';
+import { CreateCLueDto } from './dtos/create-clue.dto';
+import { UpdateCLueDto } from './dtos/update-clue.dto';
+
+import { Clue } from './entities/clue.entity';
 
 @ApiTags('Clue Module')
 @Controller('clues')
@@ -26,8 +35,17 @@ export class CluesController {
   constructor(private readonly cluesService: CluesService) {}
 
   @Get()
+  @HttpCode(HttpStatus.OK) //默认是200
+  @Header('Cache-Control', 'none')
   @ApiOperation({ summary: 'Paginated search' })
-  async findAll(@Query() dto: CluesPaginationDTO) {
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Successfully queried organization information',
+    type: ApiResponseDTO<PaginatedDTO<CLueDto>>,
+  })
+  async findAll(
+    @Query() dto: CluesPaginationDTO,
+  ): Promise<PaginatedDTO<CLueDto>> {
     return await this.cluesService.findAll(dto);
   }
 
@@ -62,7 +80,7 @@ export class CluesController {
   }
 
   @Post(':id/ignore')
-  @ApiOperation({ summary: 'upgrade a clue by id' })
+  @ApiOperation({ summary: 'ignore a clue by id' })
   async ignore(@Param('id') id: string) {
     return await this.cluesService.ignore(id);
   }

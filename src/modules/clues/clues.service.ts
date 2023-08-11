@@ -5,11 +5,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { PaginatedDTO } from '../../common/dtos/paginated.dto';
+
 import { Clue } from './entities/clue.entity';
 
-import { CluesPaginationDTO } from './dto/clues-pagination.dto';
-import { CreateCLueDto } from './dto/create-clue.dto';
-import { UpdateCLueDto } from './dto/update-clue.dto';
+import { CluesPaginationDTO } from './dtos/paginated-clues.dto';
+import { CreateCLueDto } from './dtos/create-clue.dto';
+import { UpdateCLueDto } from './dtos/update-clue.dto';
 
 import { Type } from './enums/type.enum';
 import { Status } from './enums/status.enum';
@@ -21,10 +23,32 @@ export class CluesService {
     private readonly cluesRepository: Repository<Clue>,
   ) {}
 
-  findAll(dto: CluesPaginationDTO): Promise<Clue[]> {
-    return this.cluesRepository.find();
+  /**
+   * Find clues with offset
+   */
+  async findAll(dto: CluesPaginationDTO): Promise<PaginatedDTO<Clue>> {
+    // const results = await this.cluesRepository
+    //   .createQueryBuilder()
+    //   .skip(dto.offset)
+    //   .take(dto.pageSize)
+    //   .execute();
+    const [results, total] = await this.cluesRepository.findAndCount({
+      skip: dto.offset,
+      take: parseInt(dto.pageSize, 10),
+    });
+
+    const paginatedResult = new PaginatedDTO<Clue>();
+    paginatedResult.total = total;
+    paginatedResult.pageNum = dto.pageNum;
+    paginatedResult.pageSize = dto.pageSize;
+    paginatedResult.rows = results;
+
+    return paginatedResult;
   }
 
+  /**
+   * Add new clue
+   */
   create(dto: CreateCLueDto): Promise<Clue> {
     return this.cluesRepository.save(dto);
   }
@@ -38,6 +62,9 @@ export class CluesService {
       .execute();
   }
 
+  /**
+   * Del a clue by id
+   */
   async delete(id: string) {
     // const clueInfo = await this.cluesRepository.findOneBy({
     //   id,
@@ -53,6 +80,9 @@ export class CluesService {
       .execute();
   }
 
+  /**
+   * Count clues by dynamic field
+   */
   async countItems(by: string) {
     const results = await this.cluesRepository
       .createQueryBuilder('item')
@@ -68,10 +98,16 @@ export class CluesService {
     }, {});
   }
 
+  /**
+   * Find a clue by id
+   */
   findOne(id: string) {
     return this.cluesRepository.findOneBy({ id });
   }
 
+  /**
+   * Upgrade a clue by id
+   */
   async upgrade(id: string) {
     const clueInfo = await this.findOne(id);
     if (clueInfo) {
@@ -83,6 +119,9 @@ export class CluesService {
     return {};
   }
 
+  /**
+   * Ignore a clue by id
+   */
   async ignore(id: string) {
     const clueInfo = await this.findOne(id);
     if (clueInfo) {

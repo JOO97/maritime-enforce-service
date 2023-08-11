@@ -6,15 +6,15 @@ export class CluesPaginationDTO {
     default: 1,
   })
   @IsNumberString()
-  readonly pageNum: number = 1;
+  readonly pageNum: string = '1';
 
   @ApiProperty({
     default: 10,
   })
   @IsNumberString()
-  readonly pageSize: number = 10;
+  readonly pageSize: string = '10';
 
   get offset(): number {
-    return (this.pageNum - 1) * this.pageSize;
+    return (parseInt(this.pageNum, 10) - 1) * parseInt(this.pageSize, 10);
   }
 }

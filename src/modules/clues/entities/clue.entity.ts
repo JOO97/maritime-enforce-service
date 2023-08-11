@@ -1,19 +1,13 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Entity, Column } from 'typeorm';
+
+import { AbstractEntity } from '../../../common/entities/abstract.entity';
+
 import { Level } from '../enums/level.enum';
 import { Status } from '../enums/status.enum';
 import { Type } from '../enums/type.enum';
 
 @Entity()
-export class Clue {
-  @PrimaryGeneratedColumn('uuid')
-  id: number | string;
-
+export class Clue extends AbstractEntity {
   @Column({
     type: 'varchar',
     length: 150,
@@ -56,14 +50,4 @@ export class Clue {
     type: 'timestamp',
   })
   occTime: Date;
-
-  @CreateDateColumn({
-    type: 'timestamp',
-  })
-  createdTime: Date;
-
-  @UpdateDateColumn({
-    type: 'timestamp',
-  })
-  updatedTime: Date;
 }
