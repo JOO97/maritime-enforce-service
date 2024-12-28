@@ -5,7 +5,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { isEmpty } from 'lodash';
+
 import { PaginatedDTO } from '../../common/dtos/paginated.dto';
+import { BizException } from '../../common/exceptions';
+import { ERR_REQ_FIELD_ERROR } from '../../common/return-code';
 
 import { Clue } from './entities/clue.entity';
 
@@ -32,6 +36,12 @@ export class CluesService {
     //   .skip(dto.offset)
     //   .take(dto.pageSize)
     //   .execute();
+    // if (isEmpty('')) {
+    //   throw BizException.create(
+    //     ERR_REQ_FIELD_ERROR,
+    //     'User id should not be empty!',
+    //   );
+    // }
     const [results, total] = await this.cluesRepository.findAndCount({
       skip: dto.offset,
       take: parseInt(dto.pageSize, 10),
@@ -54,6 +64,12 @@ export class CluesService {
   }
 
   update(id: string, dto: UpdateCLueDto) {
+    if (isEmpty(id)) {
+      throw BizException.create(
+        ERR_REQ_FIELD_ERROR,
+        'User id should not be empty!',
+      );
+    }
     return this.cluesRepository
       .createQueryBuilder()
       .update()

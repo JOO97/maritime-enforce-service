@@ -1,4 +1,5 @@
 /**
+ * 全局Http服务成功响应拦截器
  * https://zhuanlan.zhihu.com/p/586355635
  */
 import {
@@ -19,7 +20,8 @@ export class ResponseInterceptor implements NestInterceptor {
     return next.handle().pipe(
       map((data) =>
         Object({
-          code: HttpStatus.OK,
+          returnCode: HttpStatus.OK,
+          errorMessage: '',
           data,
         }),
       ),

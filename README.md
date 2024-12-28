@@ -83,3 +83,10 @@ URI-based versioning
 ### rxjs
 
 https://zhuanlan.zhihu.com/p/583539989
+
+## Blog
+
+异常处理
+https://medium.com/the-crowdlinker-chronicle/best-way-to-structure-your-directory-code-nestjs-a06c7a641401
+
+https://zhuanlan.zhihu.com/p/586355635

@@ -4,7 +4,8 @@ import { ValidationPipe, HttpStatus } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
-import { ResponseInterceptor } from './interceptors/response.interceptor';
+import { ResponseInterceptor } from './common/interceptors/response.interceptor';
+import { HttpServiceExceptionFilter } from './common/filters/http-service.exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -28,7 +29,11 @@ async function bootstrap() {
     }),
   );
 
+  // Set global http interceptor
   app.useGlobalInterceptors(new ResponseInterceptor());
+
+  // Set global http exception filter
+  app.useGlobalFilters(new HttpServiceExceptionFilter());
 
   // Setup swagger
   if (process.env.DOCUMENTATION_ENABLE) {
